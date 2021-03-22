@@ -1,0 +1,22 @@
+- hosts: 192.168.0.107
+  tasks:
+  - name: "Installing HTTPD package"
+    package:
+            name: "httpd"
+            state: present
+
+  - copy: 
+        dest: "/var/www/html/index.html"
+        content: "Hello This is Nishant"
+
+  - template:
+        dest: "/etc/httpd/conf.d/swarnim.conf.j2"
+        src: "swarnim.conf.j2"
+
+    notify: web services
+
+  handlers:
+   - name: web services
+     service: 
+        name: "httpd"
+        state: restarted
